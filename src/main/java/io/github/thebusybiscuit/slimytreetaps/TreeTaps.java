@@ -1,5 +1,6 @@
 package io.github.thebusybiscuit.slimytreetaps;
 
+import io.github.thebusybiscuit.slimytreetaps.utils.Util;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -59,35 +60,35 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		SlimefunItemStack blueEnderPearl = new SlimefunItemStack("BLUE_ENDER_PEARL", "38be8abd66d09a58ce12d377544d726d25cad7e979e8c2481866be94d3b32f", "&9Blue Ender Pearl", "", "&7This item can be used to", "&7craft Magical Mirrors");
 		SlimefunItemStack magicalMirror = new SlimefunItemStack("MAGICAL_MIRROR", Material.BLUE_STAINED_GLASS_PANE, "&9Magical Mirror &7(Unbound)", "", "&eRight Click &7to bind this Mirror", "&7to your current location.", "", "&7Place a bound mirror into an", "&7Item Frame and then click on", "&7that Item Frame to teleport.", "&7Teleports cost &b1 Ender Pearl");
         
-		ItemGroup itemGroup = new ItemGroup(new NamespacedKey(this, "tree_taps"), new CustomItemStack(treeTap, "&6Slimy TreeTaps", "", "&a> Click to open"));
+		ItemGroup itemGroup = new ItemGroup(new NamespacedKey(this, "tree_taps"), CustomItemStack.create(treeTap.asOne(), "&6Slimy TreeTaps", "", "&a> Click to open"));
 		RecipeType rubberFactoryType = new RecipeType(new NamespacedKey(this, "rubber_factory"), rubberFactory);
 		
 		new TreeTool(itemGroup, treeTap, cfg.getInt("resin-chance.standard"), stickyResin,
 		new ItemStack[] {
-				null, SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG),
-				SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.OAK_LOG), null,
+				null, SlimefunItems.DAMASCUS_STEEL_INGOT.asOne(), new ItemStack(Material.OAK_LOG),
+				SlimefunItems.DAMASCUS_STEEL_INGOT.asOne(), new ItemStack(Material.OAK_LOG), null,
 				new ItemStack(Material.OAK_LOG), null, new ItemStack(Material.BOWL)
 		}).register(this);
 		
 		new TreeTool(itemGroup, reinforcedTreeTap, cfg.getInt("resin-chance.reinforced"), stickyResin,
 		new ItemStack[] {
-				null, SlimefunItems.HARDENED_METAL_INGOT, new ItemStack(Material.OAK_LOG),
-				SlimefunItems.HARDENED_METAL_INGOT, treeTap, null,
-				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT
+				null, SlimefunItems.HARDENED_METAL_INGOT.asOne(), new ItemStack(Material.OAK_LOG),
+				SlimefunItems.HARDENED_METAL_INGOT.asOne(), treeTap.asOne(), null,
+				new ItemStack(Material.OAK_LOG), null, SlimefunItems.COBALT_INGOT.asOne()
 		}).register(this);
 		
 		new TreeTool(itemGroup, diamondTreeTap, cfg.getInt("resin-chance.diamond"), stickyResin,
 		new ItemStack[] {
 				null, new ItemStack(Material.DIAMOND), new ItemStack(Material.OAK_LOG),
-				new ItemStack(Material.DIAMOND), reinforcedTreeTap, null,
-				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO
+				new ItemStack(Material.DIAMOND), reinforcedTreeTap.asOne(), null,
+				new ItemStack(Material.OAK_LOG), null, SlimefunItems.CARBONADO.asOne()
 		}).register(this);
         
         new TreeTool(itemGroup, treeScraper, cfg.getInt("amber-chance"), amber,
         new ItemStack[] {
                 null, new ItemStack(Material.GOLD_INGOT), null,
-                new ItemStack(Material.GOLD_INGOT), treeTap, null,
-                null, null, SlimefunItems.BRONZE_INGOT
+                new ItemStack(Material.GOLD_INGOT), treeTap.asOne(), null,
+                null, null, SlimefunItems.BRONZE_INGOT.asOne()
         }).register(this);
 		
 		new SlimefunItem(itemGroup, stickyResin, new RecipeType(new NamespacedKey(this, "tree_tap"), treeTap),
@@ -99,16 +100,16 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		
 		new RubberFactory(itemGroup, rubberFactory, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
-				null, SlimefunItems.HEATING_COIL, null,
-				SlimefunItems.SOLDER_INGOT, SlimefunItems.ELECTRIC_FURNACE_2, SlimefunItems.SOLDER_INGOT,
-				SlimefunItems.SOLDER_INGOT, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.SOLDER_INGOT
+				null, SlimefunItems.HEATING_COIL.asOne(), null,
+				SlimefunItems.SOLDER_INGOT.asOne(), SlimefunItems.ELECTRIC_FURNACE_2.asOne(), SlimefunItems.SOLDER_INGOT.asOne(),
+				SlimefunItems.SOLDER_INGOT.asOne(), SlimefunItems.MEDIUM_CAPACITOR.asOne(), SlimefunItems.SOLDER_INGOT.asOne()
 		}) {
 			
 			@Override
 			public void registerDefaultRecipes() {
-				registerRecipe(4, new ItemStack[] {new CustomItemStack(stickyResin, 2)}, new ItemStack[] {rubber});
-				registerRecipe(6, new ItemStack[] {new CustomItemStack(rubber, 2)}, new ItemStack[] {rawPlastic});
-				registerRecipe(10, new ItemStack[] {rawPlastic}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET});
+				registerRecipe(4, new ItemStack[] {CustomItemStack.create(stickyResin.asOne(), 2)}, new ItemStack[] {rubber.asOne()});
+				registerRecipe(6, new ItemStack[] {CustomItemStack.create(rubber.asOne(), 2)}, new ItemStack[] {rawPlastic.asOne()});
+				registerRecipe(10, new ItemStack[] {rawPlastic.asOne()}, new ItemStack[] {SlimefunItems.PLASTIC_SHEET.asOne()});
 			}
 
 			@Override
@@ -125,16 +126,16 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		
 		new ResinExtractor(itemGroup, resinExtractor, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
-				null, diamondTreeTap, null,
-				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
-				SlimefunItems.ELECTRIC_MOTOR, rubberFactory, SlimefunItems.ELECTRIC_MOTOR
+				null, diamondTreeTap.asOne(), null,
+				SlimefunItems.GOLD_24K.asOne(), SlimefunItems.CARBONADO.asOne(), SlimefunItems.GOLD_24K.asOne(),
+				SlimefunItems.ELECTRIC_MOTOR.asOne(), rubberFactory.asOne(), SlimefunItems.ELECTRIC_MOTOR.asOne()
 		}) {
 			
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
 					if (!log.name().startsWith("STRIPPED_")) {
-						registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin});
+						registerRecipe(14, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin.asOne()});
 					}
 				}
 			}
@@ -158,16 +159,16 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		
 		new ResinExtractor(itemGroup, resinExtractor2, RecipeType.ENHANCED_CRAFTING_TABLE,
 		new ItemStack[] {
-				SlimefunItems.REINFORCED_ALLOY_INGOT, diamondTreeTap, SlimefunItems.REINFORCED_ALLOY_INGOT,
-				SlimefunItems.GOLD_24K, SlimefunItems.CARBONADO, SlimefunItems.GOLD_24K,
-				SlimefunItems.ELECTRIC_MOTOR, resinExtractor, SlimefunItems.ELECTRIC_MOTOR
+				SlimefunItems.REINFORCED_ALLOY_INGOT.asOne(), diamondTreeTap.asOne(), SlimefunItems.REINFORCED_ALLOY_INGOT.asOne(),
+				SlimefunItems.GOLD_24K.asOne(), SlimefunItems.CARBONADO.asOne(), SlimefunItems.GOLD_24K.asOne(),
+				SlimefunItems.ELECTRIC_MOTOR.asOne(), resinExtractor.asOne(), SlimefunItems.ELECTRIC_MOTOR.asOne()
 		}) {
 			
 			@Override
 			public void registerDefaultRecipes() {
 				for (Material log : Tag.LOGS.getValues()) {
 					if (!log.name().startsWith("STRIPPED_")) {
-						registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin});
+						registerRecipe(6, new ItemStack[] {new ItemStack(log, 8)}, new ItemStack[] {stickyResin.asOne()});
 					}
 				}
 			}
@@ -192,60 +193,60 @@ public class TreeTaps extends JavaPlugin implements SlimefunAddon {
 		new SlimefunItem(itemGroup, rawPlastic, rubberFactoryType,
 		new ItemStack[] {
 				null, null, null,
-				null, new SlimefunItemStack(rubber, 2), null,
+				null, Util.withAmount(rubber.asOne(), 2), null,
 				null, null, null
 		}).register(this);
 
 		new SlimefunItem(itemGroup, rubber, rubberFactoryType,
 		new ItemStack[] {
 				null, null, null,
-				null, stickyResin, null,
+				null, stickyResin.asOne(), null,
 				null, null, null
 		}).register(this);
 
         new SlimefunItem(itemGroup, amber, RecipeType.SMELTERY,
         new ItemStack[] {
-                new SlimefunItemStack(stickyResin, 4), null, null,
+                Util.withAmount(stickyResin.asOne(), 4), null, null,
                 null, null, null,
                 null, null, null
         }).register(this);
 
         new SlimefunItem(itemGroup, amberBlock, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {
-                amber, amber, amber,
-                amber, amber, amber,
-                amber, amber, amber
+                amber.asOne(), amber.asOne(), amber.asOne(),
+                amber.asOne(), amber.asOne(), amber.asOne(),
+                amber.asOne(), amber.asOne(), amber.asOne()
         }).register(this);
         
         new UnplaceableBlock(itemGroup, blueEnderPearl, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {
-                new ItemStack(Material.LAPIS_BLOCK), amberBlock, new ItemStack(Material.LAPIS_BLOCK),
-                amberBlock, new ItemStack(Material.ENDER_PEARL), amberBlock,
-                new ItemStack(Material.LAPIS_BLOCK), amberBlock, new ItemStack(Material.LAPIS_BLOCK)
+                new ItemStack(Material.LAPIS_BLOCK), amberBlock.asOne(), new ItemStack(Material.LAPIS_BLOCK),
+                amberBlock.asOne(), new ItemStack(Material.ENDER_PEARL), amberBlock.asOne(),
+                new ItemStack(Material.LAPIS_BLOCK), amberBlock.asOne(), new ItemStack(Material.LAPIS_BLOCK)
         }).register(this);
         
         MagicalMirror mirror = new MagicalMirror(this, itemGroup, magicalMirror, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {
-                new ItemStack(Material.GLASS), amber, new ItemStack(Material.GLASS),
-                amber, blueEnderPearl, amber,
-                new ItemStack(Material.GLASS), amber, new ItemStack(Material.GLASS)
+                new ItemStack(Material.GLASS), amber.asOne(), new ItemStack(Material.GLASS),
+                amber.asOne(), blueEnderPearl.asOne(), amber.asOne(),
+                new ItemStack(Material.GLASS), amber.asOne(), new ItemStack(Material.GLASS)
         });
         mirror.register(this);
 
         Research treeTapsResearch = new Research(new NamespacedKey(this, "tree_taps"), 6789, "Tree Taps", 15);
-		treeTapsResearch.addItems(treeTap, reinforcedTreeTap, diamondTreeTap, stickyResin, rubber, rawPlastic);
+		treeTapsResearch.addItems(treeTap.asOne(), reinforcedTreeTap.asOne(), diamondTreeTap.asOne(), stickyResin.asOne(), rubber.asOne(), rawPlastic.asOne());
 		treeTapsResearch.register();
 
 		Research automationResearch = new Research(new NamespacedKey(this, "rubber_automation"), 6790, "Automated Rubber", 20);
-		automationResearch.addItems(rubberFactory, resinExtractor, resinExtractor2);
+		automationResearch.addItems(rubberFactory.asOne(), resinExtractor.asOne(), resinExtractor2.asOne());
 		automationResearch.register();
 
         Research amberResearch = new Research(new NamespacedKey(this, "amber"), 6791, "Amber", 20);
-        amberResearch.addItems(treeScraper, amber, amberBlock);
+        amberResearch.addItems(treeScraper.asOne(), amber.asOne(), amberBlock.asOne());
         amberResearch.register();
 
         Research magicalMirrorResearch = new Research(new NamespacedKey(this, "magical_mirror"), 6792, "Magical Mirror", 30);
-        magicalMirrorResearch.addItems(blueEnderPearl, magicalMirror);
+        magicalMirrorResearch.addItems(blueEnderPearl.asOne(), magicalMirror.asOne());
         magicalMirrorResearch.register();
         
         new MagicalMirrorListener(this, mirror);
